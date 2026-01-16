@@ -81,10 +81,9 @@ namespace BlazorFluentWebAssemblyInvestigatebTest.Tests
             ctx.Services.AddSingleton(sharedData);
             var counterComponent = ctx.RenderComponent<Counter>();
 
-            // Get all buttons and find the "Click me" and "Next" buttons
+            // Get all buttons and find the "Click me" button
             var buttons = counterComponent.FindAll("fluent-button");
             var clickMeButton = buttons.First(b => b.TextContent.Contains("Click me"));
-            var nextButton = buttons.First(b => b.TextContent.Contains("Next"));
 
             // Act - Click the "Click me" button 5 times
             for (int i = 0; i < 5; i++)
