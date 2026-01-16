@@ -70,5 +70,45 @@ namespace BlazorFluentWebAssemblyInvestigatebTest.Tests
             // Assert - Verify the shared data is updated
             Assert.AreEqual(1, sharedData.sharedData);
         }
+
+        [TestMethod]
+        public void Counter_MultiClick_ThenNext_ShowsCountOnHome()
+        {
+            // Arrange
+            using var ctx = new Bunit.TestContext();
+            ctx.Services.AddFluentUIComponents();
+            var sharedData = new SharedDataPerApp();
+            ctx.Services.AddSingleton(sharedData);
+            var counterComponent = ctx.RenderComponent<Counter>();
+
+            // Get all buttons and find the "Click me" and "Next" buttons
+            var buttons = counterComponent.FindAll("fluent-button");
+            var clickMeButton = buttons.First(b => b.TextContent.Contains("Click me"));
+            var nextButton = buttons.First(b => b.TextContent.Contains("Next"));
+
+            // Act - Click the "Click me" button 5 times
+            for (int i = 0; i < 5; i++)
+            {
+                clickMeButton.Click();
+            }
+
+            // Verify the count is 5 on Counter page
+            var badge = counterComponent.Find("fluent-badge");
+            Assert.AreEqual("5", badge.TextContent);
+
+            // Verify shared data is updated
+            Assert.AreEqual(5, sharedData.sharedData);
+
+            // Act - Click the "Next" button (navigates to Home)
+            // Note: In bUnit, navigation doesn't actually change components,
+            // so we need to render the Home component separately
+            var homeComponent = ctx.RenderComponent<Home>();
+
+            // Assert - Verify the Home page shows the correct count
+            var homeText = homeComponent.Markup;
+            StringAssert.Contains(homeText, "You have clicked the button");
+            StringAssert.Contains(homeText, "5");
+            StringAssert.Contains(homeText, "time(s) on the Counter page");
+        }
     }
 }
