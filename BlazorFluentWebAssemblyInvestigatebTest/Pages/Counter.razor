@@ -1,0 +1,29 @@
+﻿@inject SharedDataPerApp sharedDataPerApp
+@inject NavigationManager Navigation
+
+
+@page "/counter"
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: <FluentBadge Appearance="Appearance.Neutral">@currentCount</FluentBadge></p>
+
+<FluentButton Appearance="Appearance.Accent" @onclick="IncrementCount">Click me</FluentButton>
+<FluentButton Appearance="Appearance.Accent" @onclick="Next">Next</FluentButton>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+        sharedDataPerApp.sharedData = currentCount;
+    }
+
+    private void Next()
+    {
+        Navigation.NavigateTo("/");
+    }
+}

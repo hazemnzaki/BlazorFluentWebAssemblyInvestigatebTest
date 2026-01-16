@@ -1,0 +1,29 @@
+﻿@inject SharedDataPerApp sharedDataPerApp
+
+@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new Fluent Blazor app.
+<br />
+<br />
+@if (data > 0)
+{
+    <p>You have clicked the button <span style="color: red;">@data</span> time(s) on the Counter page.</p>
+}
+else
+{
+    <p>Go to the Counter page and click the button to see the count here.</p>
+}
+
+
+
+@code{
+    int data = 0;
+    protected override void OnInitialized()
+    {
+        data = sharedDataPerApp.sharedData;
+    }
+}
